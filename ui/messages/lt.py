@@ -77,7 +77,7 @@ data={
     'error':u'Klaida',
     'errorAgentAlreadyExsists':u'Agentas {0} jau egzistuoja.',
     'errorAgentMax':u'Viršytas maksimalus agentų skaičius.',
-    'errorAgentNameNotValid':u'Agento vardas negalioja. Negalite naudoti ženklų / \ | # @:.',
+    'errorAgentNameNotValid':u'Agento vardas negalioja. Negalite naudoti ženklų / \\ | # @:.',
     'errorConnectionConfig':u'Ryšio klaida. Patikrinkite, ar DWAgent servisas paleistas.',
     'errorConnectionQuestion':u'Ryšio klaida. Patikrinkite savo interneto ryšį arba ugniasienės konfigūraciją.\nAr norite sukonfigūruoti tarpinį serverį?',
     'errorInvalidCode':u'Įvestas kodas neteisingas.',

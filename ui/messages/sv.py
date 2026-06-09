@@ -201,6 +201,7 @@ data={
     'warningSpyingTool':u'Tänk på att du inte får ansluta till en fjärrdator utan fjärrdatorns användares medgivande. Genom att använda DWService som ett spioneringsverktyg kan du bryta mot lagar i ditt hemland.',
     'welcomeLicense':u'Licens\nDenna programvara är fri och öppen källkod.\nDen består av en huvudkomponent och flera tillbehörskomponenter definierade som "app", som kan styras av olika licenser. För mer information besök: https://www.dwservice.net/sv/licenses-sources.html',
     'welcomePrivacyTerms':u'Genom att fortsätta med installationen eller köra denna programvara godkänner du #TERMSANDCONDITIONS och #PRIVACYPOLICY',
+    'welcomePrivacyTermsRestrictive':u'Genom att fortsätta installationen eller köra denna programvara accepterar jag [Villkor](#TERMSANDCONDITIONSLINK), [Särskilt viktiga klausuler](#RESTRICTIVETERMSANDCONDITIONSLINK) och [Integritetspolicy](#PRIVACYPOLICY).',
     'welcomeSecurity':u'Säkerhet\nFör att skydda din integritet garanterar vi att ingen information lagras på våra servrar, och kommunikationen är krypterad så att tredje part inte kan läsa dem.',
     'welcomeSoftwareUpdates':u'Mjukvaruuppdateringar\nUppdatering av denna programvara sker automatiskt.',
     'welcomeTermsAndConditions':u'Genom att välja alternativet \'{0}\' eller \'{1}\' accepterar jag #TERMSANDCONDITIONS',

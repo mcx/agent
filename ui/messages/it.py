@@ -13,6 +13,7 @@ data={
     'welcomeSecurity': u'Sicurezza\nA tutela della vostra privacy garantiamo che nessuna informazione verrà memorizzata sui nostri server e le comunicazioni sono criptate in modo che terze parti non possono leggerle.',
     'welcomeSoftwareUpdates': u'Aggiornamenti software\nGli aggiornamenti di questo software avvengono in modo automatico.',
     'welcomePrivacyTerms':u'Procedendo con l\'installazione o l\'esecuzione di questo software accetti i #TERMSANDCONDITIONS e la #PRIVACYPOLICY',
+    'welcomePrivacyTermsRestrictive':u'Procedendo con l\'installazione o eseguendo questo software accetto i [Termini e Condizioni](#TERMSANDCONDITIONSLINK), le [Clausole di particolare importanza](#RESTRICTIVETERMSANDCONDITIONSLINK) e l\'[Informativa sulla Privacy](#PRIVACYPOLICY).',
     'welcomeTermsAndConditions':u'Selezionando l\'opzione \'{0}\' o \'{1}\' accetto i #TERMSANDCONDITIONS',
     'termsAndConditions': u'Termini e Condizioni',
     'privacyPolicy': u'Informativa sulla Privacy',

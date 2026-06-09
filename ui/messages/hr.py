@@ -48,7 +48,7 @@ data={
     'code':u'Kod',
     'monitorHide':u'Sakrij',
     'proxyAuthPassword':u'Lozinka',
-    'errorAgentNameNotValid':u'Ime agenta nije ispravno.  Zabranjeni znakovi su:  / \ | # @ : .',
+    'errorAgentNameNotValid':u'Ime agenta nije ispravno.  Zabranjeni znakovi su:  / \\ | # @ : .',
     'validInteger':u'Polje "{0}" mora biti cijeli broj.',
     'confirmExit':u'Sigurno želite izaći?',
     'configureTrayIconVisibility':u'Vidljivost tray ikone.',

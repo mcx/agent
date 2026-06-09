@@ -179,6 +179,7 @@ data={
     'welcomeSecurity':u'Security\nTo protect your privacy we don\'t store information from the agent on our servers. Communications between users, our servers and agents are encrypted so that third parties can\'t access them.',
     'welcomeSoftwareUpdates':u'Software updates\nThis software updates automatically',
     'welcomePrivacyTerms':u'By proceeding with the installation or running this software you agree to the #TERMSANDCONDITIONS and the #PRIVACYPOLICY',
+    'welcomePrivacyTermsRestrictive':u'By proceeding with the installation or running this software I accept the [Terms and Conditions](#TERMSANDCONDITIONSLINK), the [Restrictive Terms and Conditions](#RESTRICTIVETERMSANDCONDITIONSLINK) and the [Privacy policy](#PRIVACYPOLICY).',
     'welcomeTermsAndConditions':u'By selecting the \'{0}\' or \'{1}\' option I accept the #TERMSANDCONDITIONS',
     'termsAndConditions': u'Terms and Conditions',
     'privacyPolicy': u'Privacy policy',

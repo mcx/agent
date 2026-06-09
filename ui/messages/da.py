@@ -201,6 +201,7 @@ data={
     'warningSpyingTool':u'Vær opmærksom på, at du muligvis ikke må tilgå en fjerncomputer uden brugerens tilladelse. Ved at anvende DWService som et spionværktøj kan du være i konflikt med loven i det land du bor i.',
     'welcomeLicense':u'Licens\nDenne software er gratis og Open Source.\nDen består af en hovedkomponent og adskillige tilhørende komponenter, defineret som "apps" som kan være reguleret af forskellige licenser. For flere informationer, besøg https://www.dwservice.net/en/licenses-sources.html',
     'welcomePrivacyTerms':u'Ved at fortsætte installationen eller ved at afvikle denne softeware accepterer du #TERMSANDCONDITIONS og #PRIVACYPOLICY',
+    'welcomePrivacyTermsRestrictive':u'Ved at fortsætte med installationen eller køre denne software accepterer jeg [Vilkår og betingelser](#TERMSANDCONDITIONSLINK), [Særligt vigtige klausuler](#RESTRICTIVETERMSANDCONDITIONSLINK) og [Privatlivspolitik](#PRIVACYPOLICY).',
     'welcomeSecurity':u'Sikkerhed\nFor at beskytte dit privatliv garanterer vi, at ingen information vil blive opbevaret på vores servere, og at kommunikationer er krypterede så trediepart ikke kan aflæse dem.',
     'welcomeSoftwareUpdates':u'Softwareopdateringer\nDenne software bliver automatisk opdateret.',
     'welcomeTermsAndConditions':u'Ved at vælge valgmuligheden \'{0}\' eller \'{1}\' accepterer jeg #TERMSANDCONDITIONS',

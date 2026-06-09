@@ -81,6 +81,8 @@ class ResText:
                         wl = locale.windows_locale[windll.GetUserDefaultUILanguage()]
                         #applng=wl.split("_")[0]
                         applng=wl
+                        if applng.startswith("he"):
+                            applng="iw"+applng[2:]
                     elif utils.is_mac():
                         p = subprocess.Popen(['defaults', 'read', '-g', 'AppleLocale'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                         sout, serr = p.communicate()

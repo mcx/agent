@@ -201,6 +201,7 @@ data={
     'warningSpyingTool':u'Seien Sie sich bewusst, dass Sie auf einen Remotecomputer nicht ohne die Zustimmung des Benutzers zugreifen dürfen. Wenn Sie DWService als Spionagewerkzeug verwenden, machen Sie sich möglicherweise in der Rechtsprechung Ihres Landes strafbar.',
     'welcomeLicense':u'Lizenz:\nDiese Software ist frei und Open Source. \nDer Hauptbestandteil der Software ist der MPLv2-Lizenz unterstellt, einige zusätzliche Softwarekomponenten sind anderen Lizenzen unterstellt. Für mehr Informationen siehe: https://www.dwservice.net/en/licenses-sources.html',
     'welcomePrivacyTerms':u'Indem Sie mit der Installation fortfahren oder diese Software ausführen, erklären Sie sich mit den #TERMSANDCONDITIONS und der #PRIVACYPOLICY einverstanden',
+    'welcomePrivacyTermsRestrictive':u'Durch Fortfahren mit der Installation oder Ausführung dieser Software akzeptiere ich die [Allgemeinen Geschäftsbedingungen](#TERMSANDCONDITIONSLINK), die [Besonders wichtigen Klauseln](#RESTRICTIVETERMSANDCONDITIONSLINK) und die [Datenschutzerklärung](#PRIVACYPOLICY).',
     'welcomeSecurity':u'Sicherheit:\nUm den Datenschutz zu gewährleisten, garantieren wir, dass keine Informationen auf unseren Servern gespeichert werden und die Kommunikation verschlüsselt ist, sodass Dritte keinen Zugriff darauf haben.',
     'welcomeSoftwareUpdates':u'Software-Aktualisierungen:\nDiese Software wird automatisch aktualisiert',
     'welcomeTermsAndConditions':u'Durch Auswählen der Option \'{0}\' oder \'{1}\' akzeptiere ich die #TERMSANDCONDITIONS',

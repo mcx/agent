@@ -201,6 +201,7 @@ data={
     'warningSpyingTool':u'Pange palun tähele, et kaugarvutile juurdepääsu ei tohi kasutada ilma kaugarvuti kasutaja nõusolekuta. Kasutades DWService\'i nuhkimisvahendina, võite rikkuda oma asukohariigi seadusi.',
     'welcomeLicense':u'Litsents\nSee tarkvara on tasuta ja avatud lähtekoodiga.\nSee koosneb ühest põhikomponendist ja mitmest lisakomponendist, mis on määratletud kui "rakendus" ja mida võiks reguleerida erinevate litsentsidega. Lisateabe saamiseks külastage: https://www.dwservice.net/en/licenses-sources.html',
     'welcomePrivacyTerms':u'Jätkates selle tarkvara paigaldamisega või selle käivitamisel nõustute dokumendiga: #TERMSANDCONDITIONS ja #PRIVACYPOLICY',
+    'welcomePrivacyTermsRestrictive':u'Jätkates selle tarkvara installimist või käivitamist, nõustun [tingimustega](#TERMSANDCONDITIONSLINK), [eriti oluliste klauslitega](#RESTRICTIVETERMSANDCONDITIONSLINK) ja [privaatsuspoliitikaga](#PRIVACYPOLICY).',
     'welcomeSecurity':u'Turvalisus\nTeie privaatsuse kaitsmiseks tagame, et meie serverites ei salvestata ühtegi teavet ja side on krüpteeritud nii, et kolmandad osapooled ei saa neid andmeid lugeda.',
     'welcomeSoftwareUpdates':u'Tarkvara uuendused\nSelle tarkvara värskendused on automaatsed.',
     'welcomeTermsAndConditions':u'Valides valiku „{0}” või „{1}”, nõustun #TERMSANDCONDITIONS.',

@@ -78,7 +78,7 @@ data={
     'error':u'Fout',
     'errorAgentAlreadyExsists':u'Agent {0} bestaat al.',
     'errorAgentMax':u'Maximum aantal agents overschreden.',
-    'errorAgentNameNotValid':u'De naam van de agent is ongeldig. U kunt geen gebruik maken van de tekens / \ | # @ : .',
+    'errorAgentNameNotValid':u'De naam van de agent is ongeldig. U kunt geen gebruik maken van de tekens / \\ | # @ : .',
     'errorConnectionConfig':u'Verbindingsfout. Controleer of de DWAgent-service draait.',
     'errorConnectionQuestion':u'Verbindingsfout. Controleer uw internetverbinding of firewall.\nWilt u een proxy configureren?',
     'errorInvalidCode':u'De ingevoerde code is ongeldig.',

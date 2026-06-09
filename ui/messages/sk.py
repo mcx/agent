@@ -201,6 +201,7 @@ data={
     'warningSpyingTool':u'Prosím berte na vedomie že nesmiete pristupovat na vzdialený počítač bez súhlasu jeho používateľa. V prípade využívania služby DWService ako nástroja na sledovanie môžete porušovať zákony Vašej krajiny.',
     'welcomeLicense':u'Licencia\nTento softvér je bezplatný a open source.\nSkladá sa z jednej hlavnej zložky a niekoľkých príslušných komponentov definovaných ako "aplikácie" ("app"), ktoré by mohli byť riadené rôznymi licenciami. Ďalšie informácie nájdete na stránke https://www.dwservice.net/sk/licenses-sources.html',
     'welcomePrivacyTerms':u'S pokračovaním inštalácie alebo používaním toho softvéru súhlasíte s #TERMSANDCONDITIONS a s #PRIVACYPOLICY',
+    'welcomePrivacyTermsRestrictive':u'Pokračovaním v inštalácii alebo spustením tohto softvéru súhlasím s [Podmienkami a ustanoveniami](#TERMSANDCONDITIONSLINK), [Osobitne dôležitými klauzulami](#RESTRICTIVETERMSANDCONDITIONSLINK) a [Zásadami ochrany súkromia](#PRIVACYPOLICY).',
     'welcomeSecurity':u'Zabezpečenie\nAby sme chránili vaše súkromie, zaručujeme, že na našich serveroch nebudú uložené žiadne informácie a komunikácia je šifrovaná, takže tretie strany ich nemôžu čítať.',
     'welcomeSoftwareUpdates':u'Aktualizácie softvéru\nAktualizácie tohto softvéru sú automatické.',
     'welcomeTermsAndConditions':u'Výberom možnosti \'{0}\' alebo \'{1}\' súhlasím s #TERMSANDCONDITIONS',

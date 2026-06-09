@@ -72,7 +72,7 @@ data={
     'error':u'Feil',
     'errorAgentAlreadyExsists':u'Agenten {0} finnes allerede.',
     'errorAgentMax':u'Overgått maksimum antall agenter.',
-    'errorAgentNameNotValid':u'Agent navnet er ikke gyldig. Du kan ikke bruke symbolene / \ | # @ : .',
+    'errorAgentNameNotValid':u'Agent navnet er ikke gyldig. Du kan ikke bruke symbolene / \\ | # @ : .',
     'errorConnectionConfig':u'Tilkoblingsfeil. Vær så snill å sjekke om DWAgent tjenesten er startet.',
     'errorConnectionQuestion':u'Tilkoblingsfeil. Vær så snill å sjekke internett tilkoblingen din eller brannmur konfigurasjonen.\nVil du konfigurere proxy?',
     'errorInvalidCode':u'Koden angitt er invalid.',

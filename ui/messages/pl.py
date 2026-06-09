@@ -201,6 +201,7 @@ data={
     'warningSpyingTool':u'Nie łącz się z komputerem bez pozwolenia jego użytkownika. Jeśli używasz DWService jako programu szpiegowskiego, możesz łamać prawo swojego kraju.',
     'welcomeLicense':u'Licencja\nTo jest wolne i otwarte oprogramowanie.\nSkłada się z jednego głównego komponentu i kilku dodatkowych, które mogą wykorzystywać inne licencje. Aby dowiedzieć się więcej, odwiedź: https://www.dwservice.net/pl/licenses-sources.html',
     'welcomePrivacyTerms':u'#TERMSANDCONDITIONSLINK, #PRIVACYPOLICYLINK - Instalując program wyrażasz na nie zgodę.',
+    'welcomePrivacyTermsRestrictive':u'Kontynuując instalację lub uruchamiając to oprogramowanie, akceptuję [Warunki i postanowienia](#TERMSANDCONDITIONSLINK), [Klauzule o szczególnym znaczeniu](#RESTRICTIVETERMSANDCONDITIONSLINK) oraz [Politykę prywatności](#PRIVACYPOLICY).',
     'welcomeSecurity':u'Bezpieczeństwo\nAby chronić Twoją prywatność, gwarantujemy, że żadne informacje nie będą gromadzone na naszych serwerach, a komunikacja jest szyfrowana, aby osoby trzecie nie mogły jej odczytać.',
     'welcomeSoftwareUpdates':u'Aktualizacje oprogramowania\nOprogramowanie aktualizuje się automatycznie.',
     'welcomeTermsAndConditions':u'Wybierając opcję \'{0}\' lub \'{1}\' akceptuję #TERMSANDCONDITIONS',

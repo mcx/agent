@@ -201,6 +201,7 @@ data={
     'warningSpyingTool':u'Lütfən, istifadəçinin razılığı olmadan uzaq bir kompüterə daxil ola bilməyəcəyinizi unutmayın. DWService\'i casusluq vasitəsi kimi istifadə edərək, yaşadığınız ölkədəki qanunları pozmuş ola bilərsiniz.',
     'welcomeLicense':u'Lisenziya\nBu proqram pulsuz və açıq mənbəlidir.\nMPLv2 lisenziyası altında buraxılmış bir əsas komponentdən və fərqli lisenziyalarla idarə olunan bir neçə əlavə komponentdən ibarətdir. Daha çox məlumat üçün müraciət edin: https://www.dwservice.net/en/licenses-sources.html',
     'welcomePrivacyTerms':u'Bu proqramı quraşdırmağa və ya işə salmaqla #TERMSANDCONDITIONS və #PRIVACYPOLICY qəbul edirsiniz',
+    'welcomePrivacyTermsRestrictive':u'Bu proqramın quraşdırılmasına davam etməklə və ya onu işə salmaqla mən [Şərtlər və Qaydalar](#TERMSANDCONDITIONSLINK), [Xüsusi əhəmiyyətli maddələr](#RESTRICTIVETERMSANDCONDITIONSLINK) və [Məxfilik siyasəti](#PRIVACYPOLICY) ilə razılaşıram.',
     'welcomeSecurity':u'Təhlükəsizlik\nMəxfiliyinizi qorumaq üçün agentdəki məlumatları serverlərimizdə saxlamırıq. İstifadəçilər, serverlərimiz və agentlərimiz arasında rabitə şifrələnir ki, üçüncü tərəflər onlara daxil ola bilməsin.',
     'welcomeSoftwareUpdates':u'Proqram yeniləmələri\nBu proqram avtomatik olaraq yenilənir',
     'welcomeTermsAndConditions':u'\'{0}\' və ya \'{1}\' seçimini seçməklə #TERMSANDCONDITIONS qəbul edirəm',

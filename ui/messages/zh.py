@@ -201,6 +201,7 @@ data={
     'warningSpyingTool':u'请注意, 未经用户的同意, 您不得访问远程计算机. 通过将DWService用作间谍工具, 您可能违反了居住国家/地区的法律.',
     'welcomeLicense':u'許可證\n該軟件是免費和開源的.\n它由一個主要組件和幾個定義為 "app" 的附件組件組成, 可以由不同的許可證管理. 有關更多信息, 請訪問: https://www.dwservice.net/en/licenses-sources.html',
     'welcomePrivacyTerms':u'通过继续安装或运行此软件, 您同意#TERMSANDCONDITIONS和#PRIVACYPOLICY',
+    'welcomePrivacyTermsRestrictive':u'继续安装或运行本软件即表示我接受[条款和条件](#TERMSANDCONDITIONSLINK)、[特别重要条款](#RESTRICTIVETERMSANDCONDITIONSLINK)以及[隐私政策](#PRIVACYPOLICY)。',
     'welcomeSecurity':u'安全性\n為了保護您的隱私, 我們保證不會在我們的服務器上存儲任何信息, 並且通信也會被加密, 因此無論如何第三方都無法讀取它們.',
     'welcomeSoftwareUpdates':u'軟件更新\n此軟件的更新是自動的.',
     'welcomeTermsAndConditions':u'透過選擇 \'{0}\' 或 \'{1}\' 選項, 我接​​受 #TERMSANDCONDITIONS',

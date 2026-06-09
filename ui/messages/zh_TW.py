@@ -201,6 +201,7 @@ data={
     'warningSpyingTool':u'請注意您如果沒有得到其使用者的允許，將無法存取遠端電腦。利用 DWService 做為間諜工具，可能違反您所在國家的法律。',
     'welcomeLicense':u'授權\n這個軟體是自由軟體與開放原始碼。\n它由一個基於 MPLv2 授權的主要成分所組成，加上多個由不同授權所規範的額外成分。想要獲得更多資訊，請造訪：https://www.dwservice.net/en/licenses-sources.html',
     'welcomePrivacyTerms':u'繼續安裝或執行這個軟體表示您同意 #TERMSANDCONDITIONS 與 #PRIVACYPOLICY',
+    'welcomePrivacyTermsRestrictive':u'繼續安裝或執行本軟體即表示我接受[條款與條件](#TERMSANDCONDITIONSLINK)、[特別重要條款](#RESTRICTIVETERMSANDCONDITIONSLINK)以及[隱私權政策](#PRIVACYPOLICY)。',
     'welcomeSecurity':u'安全\n為了保護您的隱私，我們不會在我們的伺服器上儲存來自代理器的資訊。通訊是介於使用者之間，我們的伺服器與代理器之間有加密，因而第三方無法存取它們。',
     'welcomeSoftwareUpdates':u'軟體更新\n這個軟體會自動更新',
     'welcomeTermsAndConditions':u'藉由選取「{0}」或「{1}」選項，我接受 #TERMSANDCONDITIONS',

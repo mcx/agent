@@ -36,8 +36,8 @@ import subprocess
 import utils
 
 _MAIN_URL = "https://www.dwservice.net/"
-_MAIN_URL_QA = "https://qa.dwservice.net/"
-_MAIN_URL_DEV = "https://dev.dwservice.net/dws_site/"
+_MAIN_URL_QA = "https://wwwqa.dwservice.net/"
+_MAIN_URL_DEV = "https://wwwdev.dwservice.net/dws_site/"
 _NATIVE_PATH = u"native"
 _RUNTIME_PATH = u"runtime"
 _INSTALLER_VERSION=3
@@ -1144,9 +1144,15 @@ class Install:
     def start(self, aropts={}):
         self._options=aropts
         
+        if "ambient" in self._options:
+            if self._options["ambient"]=="dev":
+                self._ambient="DEV"
+            elif self._options["ambient"]=="qa":
+                self._ambient="QA"
+        
         #debug purpose
-        if 'mock' in self._options:
-            self._bmock = self._options['mock']
+        if "mock" in self._options:
+            self._bmock = self._options["mock"]
             if "lang" in self._options:
                 messages.set_locale(self._options["lang"])
         
@@ -1244,22 +1250,48 @@ class Install:
         except Exception:
             return None'''
     
+    
+    def _add_message_markdown_hyperlink(self,chs,text):
+        result = []
+        i = 0
+        n = len(text)    
+        while i < n:
+            if text[i] == "[":
+                j = i + 1
+                while j < n and text[j] != "]":
+                    j += 1
+                if j >= n:
+                    break
+                link_text = text[i+1:j]
+                if j + 1 >= n or text[j+1] != "(":
+                    break
+                k = j + 2
+                while k < n and text[k] != ")":
+                    k += 1
+                if k >= n:
+                    break
+                url = text[j+2:k]
+                if url=="#TERMSANDCONDITIONSLINK":
+                    url="https://www.dwservice.net/terms-and-conditions.html"
+                elif url=="#RESTRICTIVETERMSANDCONDITIONSLINK":
+                    url="https://www.dwservice.net/restrictive-terms-and-conditions.html"                    
+                elif url=="#PRIVACYPOLICY":
+                    url="https://www.dwservice.net/privacy-policy.html"
+                chs.add_message_hyperlink(len("".join(result)), len(link_text), url)
+                result.append(link_text)
+                i = k + 1
+            else:
+                result.append(text[i])
+                i += 1
+    
+        return "".join(result)
+    
     def step_init(self, curui):
         #Check if instraller version is valid for machine
         if not gdi.is_windows() and not gdi.is_linux() and not gdi.is_mac():
             return ui.Message(self._get_message('versionInstallNotValid').format(""))
         if not self._silent:
             chs = ui.Chooser()
-                        
-            #self._options["welcometext"]=self._get_message('confirmInstall').format("Pippo 123 pluto 986+56")
-            #self._options["welcometext"]=self._get_message('confirmInstall').format("/usr/share/dwagent")
-            #self._options["welcometext"]=self._get_message('confirmInstall').format("c:\\programs files\\dwagent")
-            #self._options["welcometext"]=self._get_message('runWithoutInstallationWait').format("40%")
-            #self._options["welcometext"]=self._get_message('runWithoutInstallationOnlineUser').format("MOCK")
-            #self._options["welcometext"]=self._get_message('downloadFile').format("MOCK")
-            #self._options["welcometext"]=self._get_message('downloadFile').format("config") + " (10%)"
-            #self._options["welcometext"]="Prova pippo (10%)"            
-            
             if "welcometext" in self._options:
                 m=utils.str_new(self._options["welcometext"])
             else:            
@@ -1267,17 +1299,22 @@ class Install:
                 m+=self._get_message('welcomeSecurity') + "\n\n" 
                 m+=self._get_message('welcomeSoftwareUpdates') + "\n\n"
                 #m+=self._get_message('welcomePrivacyTerms')
-                m+=self._get_message('welcomeTermsAndConditions').format(self._get_message('install'),self._get_message('runWithoutInstallation'))                
+                #m+=self._get_message('welcomeTermsAndConditions').format(self._get_message('install'),self._get_message('runWithoutInstallation'))                
+                m+=self._get_message('welcomePrivacyTermsRestrictive').format(self._get_message('install'),self._get_message('runWithoutInstallation'))
+                m=self._add_message_markdown_hyperlink(chs,m)
                 
+                '''
                 p1 = m.index("https://www.dwservice.net/")
                 p2 = m.index(".html",p1)
                 surl= m[p1:p2+5]
                 chs.add_message_hyperlink(p1, len(surl), "https://www.dwservice.net/licenses-sources.html")
-                
-                mtc = self._get_message('termsAndConditions')                
+                                
+                mtc = self._get_message('termsAndConditions')
                 ptc = m.index("#TERMSANDCONDITIONS")                
                 chs.add_message_hyperlink(ptc, len(mtc), "https://www.dwservice.net/terms-and-conditions.html")
                 m=m.replace("#TERMSANDCONDITIONS", mtc)
+                '''
+                
                 '''
                 mpp = self._get_message('privacyPolicy')
                 ppp = m.index("#PRIVACYPOLICY")                
@@ -1374,14 +1411,15 @@ class Install:
 
     def step_check_install_path(self, curui):
         pth = self._install_path.get()
-        if pth.startswith("#DEV#"):
-            self._ambient="DEV"
-            pth=pth[5:]
-            self._install_path.set(pth)
-        elif pth.startswith("#QA#"):
-            self._ambient="QA"
-            pth=pth[4:]
-            self._install_path.set(pth)
+        if self._ambient=="PROD":
+            if pth.startswith("#DEV#"):
+                self._ambient="DEV"
+                pth=pth[5:]
+                self._install_path.set(pth)
+            elif pth.startswith("#QA#"):
+                self._ambient="QA"
+                pth=pth[4:]
+                self._install_path.set(pth)
         if not self._silent and not gdi.is_mac():
             if not self._bmock and utils.path_exists(pth):
                 m=self._get_message('confirmInstall').format(pth) + u'\n' + self._get_message('warningRemovePath')
@@ -2408,10 +2446,11 @@ class Install:
             
     
     def step_install(self, curui):
-        if utils.path_exists(self._current_path + utils.path_sep + "ambient.dev"):
-            self._ambient="DEV"
-        elif utils.path_exists(self._current_path + utils.path_sep + "ambient.qa"):
-            self._ambient="QA"
+        if self._ambient=="PROD":
+            if utils.path_exists(self._current_path + utils.path_sep + "ambient.dev"):
+                self._ambient="DEV"
+            elif utils.path_exists(self._current_path + utils.path_sep + "ambient.qa"):
+                self._ambient="QA"
             
         if not self._silent:
             if curui.get_key() is None and curui.get_variable().get()=="no":
@@ -2450,19 +2489,19 @@ class Install:
                     if "proxy_password" in prpconf and prpconf["proxy_password"]!="":
                         self._proxy.set_password(self.read_obfuscated_password(prpconf["proxy_password"]))
         
-        if self._silent: 
-            #SETUP PROXY
-            if "proxyType" in self._options:
-                self._proxy=communication.ProxyInfo()
-                self._proxy.set_type(self._options["proxyType"])
-            if self._proxy is not None and "proxyHost" in self._options:
-                self._proxy.set_host(self._options["proxyHost"])
-            if self._proxy is not None and "proxyPort" in self._options:
-                self._proxy.set_port(int(self._options["proxyPort"]))
-            if self._proxy is not None and "proxyUser" in self._options:
-                self._proxy.set_user(self._options["proxyUser"])
-            if self._proxy is not None and "proxyPassword" in self._options:
-                self._proxy.set_password(self._options["proxyPassword"])
+        #if self._silent: 
+        #SETUP PROXY
+        if "proxyType" in self._options:
+            self._proxy=communication.ProxyInfo()
+            self._proxy.set_type(self._options["proxyType"])
+        if self._proxy is not None and "proxyHost" in self._options:
+            self._proxy.set_host(self._options["proxyHost"])
+        if self._proxy is not None and "proxyPort" in self._options:
+            self._proxy.set_port(int(self._options["proxyPort"]))
+        if self._proxy is not None and "proxyUser" in self._options:
+            self._proxy.set_user(self._options["proxyUser"])
+        if self._proxy is not None and "proxyPassword" in self._options:
+            self._proxy.set_password(self._options["proxyPassword"])
         
         pth = self._install_path.get()
         if pth.endswith(utils.path_sep) is True:
@@ -2478,7 +2517,7 @@ class Install:
                 try:
                     if self._install_log_path is not None:
                         try:
-                            self._install_log = utils.file_open(self._install_log_path, "wb", encoding="utf-8")
+                            self._install_log = utils.file_open(self._install_log_path, "ab", encoding="utf-8")
                         except:
                             None
                     if self._install_log is None:
@@ -2505,12 +2544,17 @@ class Install:
                 if self._proxy is None:
                     self._append_log(u"Proxy NONE.")
                 else:
-                    self._append_log(u"Proxy " + self._proxy.get_type() + u" " + self._proxy.get_host() + u":" + str(self._proxy.get_port()) + u".")
+                    slgmsgprx=str(self._proxy.get_type())
+                    if self._proxy.get_host() is not None:
+                        slgmsgprx+=u" " + str(self._proxy.get_host())
+                    if self._proxy.get_port() is not None:
+                        slgmsgprx+=u":" + str(self._proxy.get_port())
+                    self._append_log(u"Proxy " + slgmsgprx + u".")
         
             
             if not self._runWithoutInstall:
                 if curui.get_key()!="retryDownload" and curui.get_key()!="retryDownloadProxy":
-                    #Crea cartella
+                    #make folder
                     self._append_log(u"Make folder " + pth + u"...")
                     self._make_directory(0.01, 0.02)
                     self._append_log(u"Make folder " + pth + u".OK!")
@@ -2816,6 +2860,8 @@ def fmain(args): #SERVE PER MACOS APP
             arotps["configPassword"]=arg[15:]
         elif arg.lower().startswith("logpath="):
             arotps["logpath"]=arg[8:]
+        elif arg.lower().startswith("ambient="):
+            arotps["ambient"]=arg[8:]
         elif arg.lower().startswith("lang="):
             try:
                 messages.set_locale(arg[5:])

@@ -201,6 +201,7 @@ data={
     'warningSpyingTool':u'Upozorňujeme, že ke vzdálenému počítači nelze přistupovat bez souhlasu jeho uživatele. Používáním služby DWService jako špionážního nástroje můžete porušovat zákony země, ve které žijete.',
     'welcomeLicense':u'Licence\nTento software je svobodný a opensource.\nSkládá se z jedné hlavní komponenty, vydané pod licencí MPLv2, a několika pomocných komponent, vydaných pod různými licencemi. Více informací naleznete na: https://www.dwservice.net/cs/licenses-sources.html',
     'welcomePrivacyTerms':u'Pokračováním v instalaci nebo spuštění tohoto software vyjadřujete souhlas se #TERMSANDCONDITIONS a #PRIVACYPOLICY',
+    'welcomePrivacyTermsRestrictive':u'Pokračováním v instalaci nebo spuštěním tohoto softwaru souhlasím s [Obchodními podmínkami](#TERMSANDCONDITIONSLINK), [Zvláště důležitými ustanoveními](#RESTRICTIVETERMSANDCONDITIONSLINK) a [Zásadami ochrany osobních údajů](#PRIVACYPOLICY).',
     'welcomeSecurity':u'Zabezpečení\nAby bylo ochráněno Vaše soukromí, garantujeme že na našich serverech nejsou ukládány žádné údaje a komunikace je zašifrována tak, že je pro všechny ostatní nečitelná.',
     'welcomeSoftwareUpdates':u'Aktualizace software\nAktualizace tohoto software se děje automaticky.',
     'welcomeTermsAndConditions':u'Výběrem možnosti „{0}“ nebo „{1}“ přijímám #TERMSANDCONDITIONS.',
