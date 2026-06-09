@@ -20,6 +20,7 @@ class Compile(compile_generic.Compile):
             conf["cpp_include_paths"]=[] 
             conf["cpp_library_paths"]=conf["cpp_include_paths"]
             conf["libraries"]=["psapi", "user32"]
+            conf["cpp_compiler_flags"]="-std=c++14"
             conf["linker_flags"]="-shared -static-libgcc -static-libstdc++" #DA RIMUOVERE E CORREGGERE config.json "lib_dependencies": ["stdcpp",...
         elif osn=="linux":
             None
@@ -43,7 +44,9 @@ class Compile(compile_generic.Compile):
         
 if __name__ == "__main__":
     m = Compile()
-    #m.set_arch(compile_generic.ARCH_X86_32)
+    #m.set_arch(compile_generic.ARCH_WINDOWS_X86_32)
+    #m.set_arch(compile_generic.ARCH_WINDOWS_X86_64)
+    #m.set_arch(compile_generic.ARCH_WINDOWS_ARM64)
     m.run()
     
     

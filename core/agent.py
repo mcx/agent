@@ -1863,12 +1863,12 @@ class Agent():
             self._init_lib(name)
             if name in self._libs:
                 cnflib=self._libs[name]
-                if "filename_" + native.get_suffix() in cnflib:
+                fn=native.get_filename_conf(cnflib)
+                if fn is not None:
                     if cnflib["refcount"]==0:
                         if "lib_dependencies" in cnflib:
                             for ln in cnflib["lib_dependencies"]:
                                 self.load_lib(ln)
-                        fn = cnflib["filename_" + native.get_suffix()]
                         cnflib["refobject"]=native._load_lib_obj(fn)
                     cnflib["refcount"]+=1
                     self.write_info("Lib " + name + " loaded.")
@@ -1886,7 +1886,8 @@ class Agent():
         try:
             if name in self._libs:
                 cnflib=self._libs[name]
-                if "filename_" + native.get_suffix() in cnflib:
+                fn=native.get_filename_conf(cnflib)
+                if fn is not None:
                     cnflib["refcount"]-=1
                     if cnflib["refcount"]==0:
                         native._unload_lib_obj(cnflib["refobject"])

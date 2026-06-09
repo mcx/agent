@@ -27,7 +27,7 @@ typedef void (*CallbackEncodeResult)(unsigned int, unsigned char*);
 #include "turbojpeg.h"
 
 #if defined OS_WINDOWS
-#include <Userenv.h>
+#include <userenv.h>
 #include "windows/windowsloadlib.h"
 #endif
 

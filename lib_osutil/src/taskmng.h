@@ -12,7 +12,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #include <windows.h>
 #include <string>
 #include <tlhelp32.h>
-#include <Psapi.h>
+#include <psapi.h>
 #endif
 using namespace std;
 

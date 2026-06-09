@@ -15,6 +15,7 @@ import tarfile
 import codecs
 import subprocess
 import json
+import utils
 import xml.etree.ElementTree
 
 MAIN_URL = "https://www.dwservice.net/"
@@ -195,15 +196,16 @@ def remove_from_native(pathnative, mainconf):
         os.remove(psrc)
 
 def copy_to_native(pathnative, mainconf):
-    if is_windows():        
+    osn=mainconf.get("os")
+    if osn=="windows":
         if not "windows" in mainconf:
             return None
         cconf = mainconf["windows"]
-    elif is_linux():
+    elif osn=="linux":
         if not "linux" in mainconf:
             return None
         cconf = mainconf["linux"]
-    elif is_mac():    
+    elif osn=="mac":    
         if not "mac" in mainconf:
             return None
         cconf = mainconf["mac"]
@@ -245,13 +247,33 @@ def compile_lib_path(cconf,pathsrc,pathdst,srcfiles):
             if not os.path.exists(pathdst + os.sep + srcname.split(".")[0] + ".o"):
                 raise Exception("Compiler error.")
             srcfiles.append(srcname.split(".")[0] + ".o ")
+        elif f.endswith(".c"):
+            srcname=f
+            scmd=cconf["c_compiler"]
+            apprs=""
+            if "cpp_include_paths" in cconf:
+                for i in range(len(cconf["cpp_include_paths"])):
+                    if i>0:
+                        apprs+=" "
+                    apprs+="-I\"" + os.path.abspath(cconf["cpp_include_paths"][i]) + "\""
+            scmd=scmd.replace("%INCLUDE_PATH%", apprs)
+            scmd=scmd.replace("%NAMED%", srcname.split(".")[0] + ".d")
+            scmd=scmd.replace("%NAMEO%", srcname.split(".")[0] + ".o")
+            scmd=scmd.replace("%NAMECPP%", pathsrc + os.sep + srcname)
+            if not system_exec(scmd,pathdst):
+                raise Exception("Compiler error.")
+            if not os.path.exists(pathdst + os.sep + srcname.split(".")[0] + ".o"):
+                raise Exception("Compiler error.")            
+            srcfiles.append(srcname.split(".")[0] + ".o ")
+            
 
 def compile_lib(mainconf):
     
     init_path(mainconf["pathdst"])
-    cflgs=""    
+    cflgs=""
     lflgs=""
-    if is_windows():        
+    osn=mainconf.get("os")
+    if osn=="windows":
         if not "windows" in mainconf:
             print("NO CONFIGURATION.")
             return None
@@ -262,9 +284,12 @@ def compile_lib(mainconf):
             cflgs+=" -O3"
         if "linker_flags" in cconf:
             lflgs=cconf["linker_flags"]
-        cconf["cpp_compiler"]="g++ " + cflgs + " -DOS_WINDOWS %INCLUDE_PATH% -g3 -Wall -c -fmessage-length=0 -o \"%NAMEO%\" \"%NAMECPP%\""
-        cconf["linker"]="g++ " + lflgs + " %LIBRARY_PATH% -s -municode -o %OUTNAME% %SRCFILES% %LIBRARIES%"
-    elif is_linux():
+        scppcmd=cconf.get("cpp_command","g++")
+        sccmd=cconf.get("c_command","gcc")        
+        cconf["cpp_compiler"]=scppcmd + " " + cflgs + " -DOS_WINDOWS %INCLUDE_PATH% -g3 -Wall -c -fmessage-length=0 -o \"%NAMEO%\" \"%NAMECPP%\""
+        cconf["c_compiler"]=sccmd + " " + cflgs + " -DOS_WINDOWS %INCLUDE_PATH% -g3 -Wall -c -fmessage-length=0 -o \"%NAMEO%\" \"%NAMECPP%\""
+        cconf["linker"]=scppcmd + " " + lflgs + " %LIBRARY_PATH% -s -municode -o %OUTNAME% %SRCFILES% %OTHER_RESOURCES% %LIBRARIES%"
+    elif osn=="linux":
         if not "linux" in mainconf:
             print("NO CONFIGURATION.")
             return None
@@ -273,9 +298,10 @@ def compile_lib(mainconf):
             cflgs=cconf["cpp_compiler_flags"]
         if "linker_flags" in cconf:
             lflgs=cconf["linker_flags"]
-        cconf["cpp_compiler"]="g++ " + cflgs + " -DOS_LINUX %INCLUDE_PATH% -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF\"%NAMED%\" -MT\"%NAMEO%\" -o \"%NAMEO%\" \"%NAMECPP%\""
-        cconf["linker"]="g++ " + lflgs + " %LIBRARY_PATH% -s -shared -o %OUTNAME% %SRCFILES% %LIBRARIES%"
-    elif is_mac():    
+        scppcmd=cconf.get("cpp_command","g++")
+        cconf["cpp_compiler"]=scppcmd + " " + cflgs + " -DOS_LINUX %INCLUDE_PATH% -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF\"%NAMED%\" -MT\"%NAMEO%\" -o \"%NAMEO%\" \"%NAMECPP%\""
+        cconf["linker"]=scppcmd + " " + lflgs + " %LIBRARY_PATH% -s -shared -o %OUTNAME% %SRCFILES% %OTHER_RESOURCES% %LIBRARIES%"
+    elif osn=="mac":
         if not "mac" in mainconf:
             print("NO CONFIGURATION.")
             return None
@@ -284,11 +310,15 @@ def compile_lib(mainconf):
             cflgs=cconf["cpp_compiler_flags"]
         if "linker_flags" in cconf:
             lflgs=cconf["linker_flags"]
-        cconf["cpp_compiler"]="g++ " + cflgs + " -DOS_MAC %INCLUDE_PATH% -O3 -Wall -c -fmessage-length=0 -o \"%NAMEO%\" \"%NAMECPP%\""
-        cconf["linker"]="g++ " + lflgs + " %LIBRARY_PATH% -dynamiclib -o %OUTNAME% %SRCFILES% %LIBRARIES% %FRAMEWORKS%"
+        scppcmd=cconf.get("cpp_command","g++")
+        cconf["cpp_compiler"]=scppcmd + " " + cflgs + " -DOS_MAC %INCLUDE_PATH% -O3 -Wall -c -fmessage-length=0 -o \"%NAMEO%\" \"%NAMECPP%\""
+        cconf["linker"]=scppcmd + " " + lflgs + " %LIBRARY_PATH% -dynamiclib -o %OUTNAME% %SRCFILES% %LIBRARIES% %FRAMEWORKS%"
+    else:
+        raise Exception("Invalid os: " + str(osn))
+    
     
     if not "libraries" in cconf or len(cconf["libraries"])==0:
-        cconf ["linker"]=cconf ["linker"].replace("%LIBRARIES%", "")
+        cconf["linker"]=cconf ["linker"].replace("%LIBRARIES%", "")
     else:
         libsar=[]
         for i in range(len(cconf["libraries"])):
@@ -305,27 +335,6 @@ def compile_lib(mainconf):
     
     srcfiles=[]
     compile_lib_path(cconf,os.path.abspath(mainconf["pathsrc"]),os.path.abspath(mainconf["pathdst"]),srcfiles)
-    '''
-    dsrc = os.listdir(mainconf["pathsrc"])
-    for f in dsrc:
-        if f.endswith(".cpp") or (is_mac() and (f.endswith(".m") or f.endswith(".mm"))):
-            srcname=f
-            scmd=cconf["cpp_compiler"]
-            apprs=""
-            if "cpp_include_paths" in cconf:
-                for i in range(len(cconf["cpp_include_paths"])):
-                    if i>0:
-                        apprs+=" "
-                    apprs+="-I\"" + os.path.abspath(cconf["cpp_include_paths"][i]) + "\""
-            scmd=scmd.replace("%INCLUDE_PATH%", apprs)
-            scmd=scmd.replace("%NAMED%", srcname.split(".")[0] + ".d")
-            scmd=scmd.replace("%NAMEO%", srcname.split(".")[0] + ".o")
-            scmd=scmd.replace("%NAMECPP%", os.path.abspath(mainconf["pathsrc"]) + os.sep + srcname)        
-            if not system_exec(scmd,mainconf["pathdst"]):
-                raise Exception("Compiler error.")
-            srcfiles.append(srcname.split(".")[0] + ".o ")    
-    '''
-            
     scmd=cconf["linker"]
     apprs=""
     if "cpp_library_paths" in cconf:
@@ -334,6 +343,14 @@ def compile_lib(mainconf):
                 apprs+=" "
             apprs+="-L\"" + os.path.abspath(cconf["cpp_library_paths"][i]) + "\""
     scmd=scmd.replace("%LIBRARY_PATH%", apprs)
+    apprs=""
+    if "other_resources" in cconf:
+        for i in range(len(cconf["other_resources"])):
+            if i>0:
+                apprs+=" "
+            apprs+="\"" + os.path.abspath(cconf["other_resources"][i]) + "\""
+    scmd=scmd.replace("%OTHER_RESOURCES%", apprs)
+    
     scmd=scmd.replace("%OUTNAME%", cconf["outname"])
     scmd=scmd.replace("%SRCFILES%", " ".join(srcfiles))
     if not system_exec(scmd,mainconf["pathdst"]):

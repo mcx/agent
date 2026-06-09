@@ -6,7 +6,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #include <windows.h>
 #include <tchar.h>
 #include <fstream>
-#include <UserEnv.h>
+#include <userenv.h>
 #include <string>
 
 #ifndef MAIN_H_

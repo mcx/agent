@@ -19,7 +19,7 @@ class Compile(compile_generic.Compile):
             conf["outname"]="dwaggdi.dll" 
             conf["cpp_include_paths"]=[] 
             conf["cpp_library_paths"]=conf["cpp_include_paths"]
-            conf["cpp_compiler_flags"]="-O2" #USED -O2 BECAUSE WITH -O3 DRWEB ANTIVIRUS MARK FILE AS NOT TRUST
+            conf["cpp_compiler_flags"]="-O2 -std=c++14" #USED -O2 BECAUSE WITH -O3 DRWEB ANTIVIRUS MARK FILE AS NOT TRUST
             conf["libraries"]=["gdi32", "shell32", "user32", "userenv"]
             conf["linker_flags"]="-static-libgcc -static-libstdc++ -shared"
         elif osn=="linux":
@@ -41,8 +41,9 @@ class Compile(compile_generic.Compile):
 
 if __name__ == "__main__":
     m = Compile()
-    #m.set_arch(compile_generic.ARCH_X86_64)
-    #m.set_arch(compile_generic.ARCH_X86_32)
+    #m.set_arch(compile_generic.ARCH_WINDOWS_X86_32)
+    #m.set_arch(compile_generic.ARCH_WINDOWS_X86_64)
+    #m.set_arch(compile_generic.ARCH_WINDOWS_ARM64)
     m.run()
     
     

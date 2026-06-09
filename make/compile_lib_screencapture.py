@@ -49,7 +49,9 @@ class Compile(compile_generic.Compile):
 
 if __name__ == "__main__":    
     m = Compile()
-    #m.set_arch(compile_generic.ARCH_X86_32)
+    #m.set_arch(compile_generic.ARCH_WINDOWS_X86_32)
+    #m.set_arch(compile_generic.ARCH_WINDOWS_X86_64)
+    #m.set_arch(compile_generic.ARCH_WINDOWS_ARM64)
     m.run()
     
     

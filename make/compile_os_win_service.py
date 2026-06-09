@@ -20,12 +20,14 @@ class Compile(compile_generic.Compile):
             conf["cpp_include_paths"]=[]
             conf["cpp_library_paths"]=conf["cpp_include_paths"]
             conf["libraries"]=["user32", "advapi32", "userenv", "shell32", "ole32"]
-            conf["linker_flags"]="-static-libgcc -static-libstdc++"
+            conf["linker_flags"]="-static -static-libgcc -static-libstdc++"            
         return conf
 
 if __name__ == "__main__":
     m = Compile()
-    #m.set_32bit()
+    #m.set_arch(compile_generic.ARCH_WINDOWS_X86_32)
+    #m.set_arch(compile_generic.ARCH_WINDOWS_X86_64)
+    #m.set_arch(compile_generic.ARCH_WINDOWS_ARM64)
     m.run()
     
     

@@ -36,31 +36,36 @@ bool SystemMng::isVistaOrLater() {
 }
 
 void SystemMng::appendCpuName(JSONWriter* jsonw) {
-	int CPUInfo[4] = {-1};
-	__cpuid(CPUInfo, 0x80000000);
-	unsigned int nExIds = CPUInfo[0];
-
 	char CPUBrandString[0x40] = {0};
-	for( unsigned int i=0x80000000; i<=nExIds; ++i) {
-		__cpuid(CPUInfo, i);
+	#if defined(__aarch64__) || defined(_M_ARM64)
+		strncpy(CPUBrandString, "ARM64 Processor", sizeof(CPUBrandString));
+	#elif defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86)
+		int CPUInfo[4] = {-1};
+		__cpuid(CPUInfo, 0x80000000);
+		unsigned int nExIds = CPUInfo[0];
+		for( unsigned int i=0x80000000; i<=nExIds; ++i) {
+			__cpuid(CPUInfo, i);
 
-		if (i == 0x80000002)
-		{
-			memcpy( CPUBrandString,
-					CPUInfo,
-					sizeof(CPUInfo));
+			if (i == 0x80000002)
+			{
+				memcpy( CPUBrandString,
+						CPUInfo,
+						sizeof(CPUInfo));
+			}
+			else if( i == 0x80000003 )
+			{
+				memcpy( CPUBrandString + 16,
+						CPUInfo,
+						sizeof(CPUInfo));
+			}
+			else if( i == 0x80000004 )
+			{
+				memcpy(CPUBrandString + 32, CPUInfo, sizeof(CPUInfo));
+			}
 		}
-		else if( i == 0x80000003 )
-		{
-			memcpy( CPUBrandString + 16,
-					CPUInfo,
-					sizeof(CPUInfo));
-		}
-		else if( i == 0x80000004 )
-		{
-			memcpy(CPUBrandString + 32, CPUInfo, sizeof(CPUInfo));
-		}
-	}
+	#else
+		strncpy(CPUBrandString, "Unknown Processor", sizeof(CPUBrandString));
+	#endif
 	jsonw->addString(L"cpuName",towstring(CPUBrandString));
 }
 

@@ -19,13 +19,16 @@ class Compile(compile_generic.Compile):
             conf["outname"]="dwaglnc.exe" 
             conf["cpp_include_paths"]=[]
             conf["cpp_library_paths"]=conf["cpp_include_paths"]
-            conf["libraries"]=["user32", "advapi32", "userenv", "shell32"]
-            conf["linker_flags"]="-static-libgcc -static-libstdc++"
+            conf["libraries"]=["user32", "advapi32", "userenv", "shell32"]            
+            conf["linker_flags"]="-static -static-libgcc -static-libstdc++ -mwindows"
         return conf
 
 
 if __name__ == "__main__":
     m = Compile()
+    #m.set_arch(compile_generic.ARCH_WINDOWS_X86_32)
+    #m.set_arch(compile_generic.ARCH_WINDOWS_X86_64)
+    #m.set_arch(compile_generic.ARCH_WINDOWS_ARM64)
     m.run()
     
     

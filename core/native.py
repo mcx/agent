@@ -52,13 +52,21 @@ def fmain(args):
                 main.start_guilnc()
                 sys.exit(0)
 
-def get_suffix():
-    if utils.is_windows():
-        return "win"
-    elif utils.is_linux():
-        return "linux"
-    elif utils.is_mac():
-        return "mac"
+def get_filename_conf(cnflib):
+    if "filename" in cnflib:
+        return cnflib["filename"]
+    else:
+        #COMPATIBILITY OLD CONF FILES 2026 05 06
+        if utils.is_windows():
+            sfx="win"
+        elif utils.is_linux():
+            sfx="linux"
+        elif utils.is_mac():
+            sfx="mac"
+        else:
+            return None
+        if "filename_"+sfx in cnflib:
+            return cnflib["filename_"+sfx]
     return None
 
 def get_library_config(name):
@@ -81,8 +89,8 @@ def _load_libraries_with_deps_list(ar,name):
         if "lib_dependencies" in cnflib:
             for ln in cnflib["lib_dependencies"]:
                 _load_libraries_with_deps_list(ar,ln)
-        if "filename_" + get_suffix() in cnflib:
-            fn = cnflib["filename_" + get_suffix()]
+        fn = get_filename_conf(cnflib)
+        if fn is not None:
             ar.insert(0,_load_lib_obj(fn))
 
 def load_libraries_with_deps(name):

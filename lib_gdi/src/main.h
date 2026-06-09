@@ -9,10 +9,10 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #else
 #if defined OS_WINDOWS
 #include <windows.h>
-#include <windowsX.h>
+#include <windowsx.h>
 #include <vector>
-#include <Shellapi.h>
-#include <Shlwapi.h>
+#include <shellapi.h>
+#include <shlwapi.h>
 #endif
 
 #ifndef MAIN_H_

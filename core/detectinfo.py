@@ -111,9 +111,9 @@ def get_native_suffix():
             elif is_linux() and len(sapp)>=7 and sapp[0:7].lower()=="aarch64":
                 return "linux_arm64_v1"
             elif is_windows() and sapp.upper()=="ARM64":
-                return "win_x86_32" 
+                return "win_arm64_v1"
             elif is_mac() and sapp.upper()=="ARM64":
-                return "mac_arm64_v1" 
+                return "mac_arm64_v1"
     except:
         None
     if is_linux():

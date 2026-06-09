@@ -13,8 +13,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #include <string>
 #include <shlobj.h>
 #include <time.h>
-#include <Aclapi.h>
-#include <shlobj.h>
 #include <vector>
 #include <algorithm>
 #include <codecvt>

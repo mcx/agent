@@ -124,8 +124,10 @@ void startRemove(wstring dwPath){
 	ZeroMemory(&siStartupInfo, sizeof(STARTUPINFO));
 	siStartupInfo.cb= sizeof(STARTUPINFO);
 	siStartupInfo.lpReserved=NULL;
-	siStartupInfo.lpDesktop = L"winsta0\\default";
-	siStartupInfo.lpTitle=L"DWAGRemover";
+	wchar_t lpDesktop[] = L"winsta0\\default";
+	siStartupInfo.lpDesktop = lpDesktop;
+	wchar_t lpTitle[] = L"DWAGRemover";
+	siStartupInfo.lpTitle=lpTitle;
 	siStartupInfo.dwX=0;
 	siStartupInfo.dwY=0;
 	siStartupInfo.dwXSize=0;
@@ -140,7 +142,7 @@ void startRemove(wstring dwPath){
 	DWORD dwSessionId = WTSGetActiveConsoleSessionId();
 	if (dwSessionId) {
 		HANDLE hPToken;
-		if (!OpenProcessToken(procHandle, TOKEN_DUPLICATE, &hPToken) == 0) {
+		if (OpenProcessToken(procHandle, TOKEN_DUPLICATE, &hPToken) != 0) {
 			if (DuplicateTokenEx(hPToken,MAXIMUM_ALLOWED,0,SecurityImpersonation,TokenPrimary,&hUserTokenDup) != 0) {
 				if (SetTokenInformation(hUserTokenDup,(TOKEN_INFORMATION_CLASS) TokenSessionId,&dwSessionId,sizeof (dwSessionId)) != 0) {
 					if(CreateEnvironmentBlock(&pEnv,hUserTokenDup,TRUE)){
@@ -229,7 +231,7 @@ void loadProperties(wstring dwPath) {
 			}
 			trimAll(line);
 
-			//Legge le proprietà necessarie
+			//Read properties
 			int endpart1 = line.find_first_of(L"=");
 			wstring part1 = line.substr(0, endpart1);
 			trimAll(part1);
@@ -245,65 +247,69 @@ void loadProperties(wstring dwPath) {
 }
 
 int wmain(int argc, wchar_t **argv) {
-		if(argc > 0){
-		wstring scommand = wstring(argv[1]);
-		if (scommand.compare(L"remove")==0){
-			if (argc>=2){
-				Sleep(2000);
-				deleteDir(argv[2]);
+	try {
+		if(argc > 1){
+			wstring scommand = wstring(argv[1]);
+			if (scommand.compare(L"remove")==0){
+				if (argc>=3){
+					Sleep(2000);
+					deleteDir(argv[2]);
+				}
+				return 0;
 			}
-			return 0;
+			SetEnvironmentVariableW(TEXT(L"PYTHONHOME"),TEXT(L"runtime"));
+			wstring dwPath = getDWAgentPath();
+			loadProperties(dwPath);
+			wstring cmd=L"";
+			if (scommand.compare(L"monitor")==0){
+				cmd=L"-S -m monitor window";
+				ShellExecuteW(GetDesktopWindow(), L"open", pythonPath.c_str(), cmd.c_str(), dwPath.c_str() , SW_SHOW);
+			}else if (scommand.compare(L"systray")==0){
+				cmd=L"-S -m monitor systray";
+				ShellExecuteW(GetDesktopWindow(), L"open", pythonPath.c_str(), cmd.c_str(), dwPath.c_str() , SW_SHOW);
+			}else if (scommand.compare(L"configure")==0){
+				cmd=L"-S -m configure";
+				ShellExecuteW(GetDesktopWindow(), L"open", pythonPath.c_str(), cmd.c_str(), dwPath.c_str() , SW_SHOW);
+			}else if (scommand.compare(L"uninstallAsAdimn")==0){
+				SHELLEXECUTEINFOW ShExecInfo = {0};
+				ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFOW);
+				ShExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
+				ShExecInfo.hwnd = NULL;
+				ShExecInfo.lpVerb = NULL;
+				ShExecInfo.lpFile = pythonPath.c_str();
+				ShExecInfo.lpParameters = L"-S -m installer uninstall";
+				ShExecInfo.lpDirectory = dwPath.c_str();
+				ShExecInfo.nShow = SW_SHOW;
+				ShExecInfo.hInstApp = NULL;
+				ShellExecuteExW(&ShExecInfo);
+				WaitForSingleObject(ShExecInfo.hProcess,INFINITE);
+				//Elimina cartella lanciando l'applicazione da temp
+				wstring fln = dwPath;
+				fln.append(L"\\").append(L"agent.uninstall");
+				if (existsFile(fln)){
+					startRemove(dwPath);
+				}
+			}else if (scommand.compare(L"uninstall")==0){
+				//Rilancia L'Applicazione come Amministratore
+				SHELLEXECUTEINFOW ShExecInfo = {0};
+				ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFOW);
+				ShExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
+				ShExecInfo.hwnd = NULL;
+				if (isRunAsAdmin()){
+					ShExecInfo.lpVerb  = NULL;
+				}else{
+					ShExecInfo.lpVerb  = L"runas";
+				}
+				ShExecInfo.lpFile = L"native\\dwaglnc.exe";
+				ShExecInfo.lpParameters = L"uninstallAsAdimn";
+				ShExecInfo.lpDirectory = dwPath.c_str();
+				ShExecInfo.nShow = SW_SHOW;
+				ShExecInfo.hInstApp = NULL;
+				ShellExecuteExW(&ShExecInfo);
+			}
 		}
-		SetEnvironmentVariableW(TEXT(L"PYTHONHOME"),TEXT(L"runtime"));
-		wstring dwPath = getDWAgentPath();
-		loadProperties(dwPath);
-		wstring cmd=L"";
-		if (scommand.compare(L"monitor")==0){
-			cmd=L"-S -m monitor window";
-			ShellExecuteW(GetDesktopWindow(), L"open", pythonPath.c_str(), cmd.c_str(), dwPath.c_str() , SW_SHOW);
-		}else if (scommand.compare(L"systray")==0){
-			cmd=L"-S -m monitor systray";
-			ShellExecuteW(GetDesktopWindow(), L"open", pythonPath.c_str(), cmd.c_str(), dwPath.c_str() , SW_SHOW);
-		}else if (scommand.compare(L"configure")==0){
-			cmd=L"-S -m configure";
-			ShellExecuteW(GetDesktopWindow(), L"open", pythonPath.c_str(), cmd.c_str(), dwPath.c_str() , SW_SHOW);
-		}else if (scommand.compare(L"uninstallAsAdimn")==0){
-			SHELLEXECUTEINFOW ShExecInfo = {0};
-			ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFOW);
-			ShExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
-			ShExecInfo.hwnd = NULL;
-			ShExecInfo.lpVerb = NULL;
-			ShExecInfo.lpFile = pythonPath.c_str();
-			ShExecInfo.lpParameters = L"-S -m installer uninstall";
-			ShExecInfo.lpDirectory = dwPath.c_str();
-			ShExecInfo.nShow = SW_SHOW;
-			ShExecInfo.hInstApp = NULL;
-			ShellExecuteExW(&ShExecInfo);
-			WaitForSingleObject(ShExecInfo.hProcess,INFINITE);
-			//Elimina cartella lanciando l'applicazione da temp
-			wstring fln = dwPath;
-			fln.append(L"\\").append(L"agent.uninstall");
-			if (existsFile(fln)){
-				startRemove(dwPath);
-			}
-		}else if (scommand.compare(L"uninstall")==0){
-			//Rilancia L'Applicazione come Amministratore
-			SHELLEXECUTEINFOW ShExecInfo = {0};
-			ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFOW);
-			ShExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
-			ShExecInfo.hwnd = NULL;
-			if (isRunAsAdmin()){
-				ShExecInfo.lpVerb  = NULL;
-			}else{
-				ShExecInfo.lpVerb  = L"runas";
-			}
-			ShExecInfo.lpFile = L"native\\dwaglnc.exe";
-			ShExecInfo.lpParameters = L"uninstallAsAdimn";
-			ShExecInfo.lpDirectory = dwPath.c_str();
-			ShExecInfo.nShow = SW_SHOW;
-			ShExecInfo.hInstApp = NULL;
-			ShellExecuteExW(&ShExecInfo);
-		}
+	} catch (...) {
+		return 1;
 	}
     return 0;
 }

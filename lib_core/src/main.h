@@ -5,10 +5,10 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #if defined OS_WINDOWS
 #include <windows.h>
-#include <Aclapi.h>
+#include <aclapi.h>
 #include <shlobj.h>
 #include <vector>
-#include <Userenv.h>
+#include <userenv.h>
 typedef BOOL (WINAPI *IWinStationConnectW)(HANDLE server, ULONG connectSessionId,ULONG activeSessionId, PCWSTR password, ULONG unknown);
 #endif
 #if defined OS_LINUX
