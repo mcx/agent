@@ -26,12 +26,6 @@ except Exception as ex:
     None
 
 try:
-    import pwd
-    import crypt
-except:
-    None
-
-try:
     import termios
     import pty
     import fcntl
@@ -196,6 +190,10 @@ class ShellManager(threading.Thread):
                     
                     if prprequest["type"]=="open" or prprequest["type"]==0: #28 04 23 NUMBERIC IS FOR COMPATIBILITY
                         sid=prprequest["id"]
+                        if sid in self._shell_list:
+                            shl=self._shell_list[sid]
+                            shl.terminate()
+                            del self._shell_list[sid]
                         if agent.is_windows():
                             shl = Windows(self, sid, prprequest["cols"], prprequest["rows"])
                         else:
@@ -253,6 +251,13 @@ class ShellManager(threading.Thread):
                         tm=SHELL_TIMEOUT_RECOVERY
                     if self._timeout_counter.is_elapsed(tm):
                         self._bclose=True
+                        if self._recovery_supported and not self._recovery:
+                            snd = {}
+                            snd["type"]="info"
+                            snd["version"]=SHELL_VERSION
+                            snd["ids"]=[]
+                            appsend = json.dumps(snd)
+                            self._websocket.send_string(appsend)
                     elif not self._recovery:
                         if self._send_info:
                             self._send_info=False
@@ -263,7 +268,7 @@ class ShellManager(threading.Thread):
                             for idx in self._shell_list:
                                 snd["ids"].append(idx)
                             appsend = json.dumps(snd)
-                            self._websocket.send_string(appsend)                        
+                            self._websocket.send_string(appsend)
                         arrem=[]
                         for idx in self._shell_list:
                             try:
@@ -290,6 +295,7 @@ class ShellManager(threading.Thread):
                                     snd = {}
                                     snd["type"]="data"
                                     snd["id"]=idx
+                                    snd["terminate"]=True
                                     snd["data"]="\r\n" + str(er)
                                     appsend = json.dumps(snd)
                                     self._websocket.send_string(appsend)
@@ -328,9 +334,9 @@ class ShellManager(threading.Thread):
         self._semaphore.acquire()
         try:
             if not self._bclose and self._recovery:
-                self._accept_websocket(wsock)                
                 self._timeout_counter.reset()
                 self._recovery=False
+                self._accept_websocket(wsock)                                
                 bret=True
         finally:
             self._semaphore.release()
@@ -507,18 +513,33 @@ class LinuxMac():
         self._ppid=-1
         self._pio=None
         self._reader=None
-        self._writer=None        
+        self._writer=None
+        self._libcrypt=None
     
     def get_id(self):
         return self._id
+        
+    def _init_check_login(self):
+        import pwd
+        if agent.is_linux():
+            try:
+                import crypt
+            except Exception as e:
+                import ctypes
+                import ctypes.util
+                lib_name = ctypes.util.find_library("crypt") or ctypes.util.find_library("c")
+                if lib_name is None:
+                    raise("Library crypt not found.")
+                self._libcrypt = ctypes.CDLL(lib_name)
+                self._libcrypt.crypt.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
+                self._libcrypt.crypt.restype = ctypes.c_char_p
     
     def initialize(self):
         try:
-            bauth = self._manager._shlmain._agent_main.get_config('shell.enable_authentication', False)            
+            bauth = self._manager._shlmain._agent_main.get_config('shell.enable_authentication', False)
             if bauth and os.getuid()==0:
                 try:
-                    import pwd
-                    import crypt
+                    self._init_check_login()
                 except Exception as e:
                     self._manager._shlmain._agent_main.write_except(e,"AppShell:: missing python module pwd or crypt")
                     self.terminate()
@@ -537,6 +558,19 @@ class LinuxMac():
                 return self._check_login_linux(u,p)
         return False        
     
+    def _check_login_linux_password(self, p, phash):
+        if self._libcrypt is not None:
+            pw_bytes = p.encode("utf-8")
+            salt_bytes = phash.encode("utf-8")
+        
+            res = self._libcrypt.crypt(pw_bytes, salt_bytes)
+            if res is None:
+                raise RuntimeError("crypt return null.")
+            return res.decode("utf-8")==phash
+        else:
+            import crypt
+            return crypt.crypt(p, phash)==phash
+    
     def _check_login_linux(self,u,p):        
         try:
             phash = None
@@ -549,13 +583,14 @@ class LinuxMac():
                         phash = sentry[1]
             else:
                 try:
+                    import pwd
                     uinfo = pwd.getpwnam(u)
                     if uinfo is not None:
                         phash=uinfo.pw_passwd
                 except:
                     None                    
             if phash is not None:
-                return crypt.crypt(p, phash) == phash
+                return self._check_login_linux_password(p, phash)
             return False
         except:
             e = utils.get_exception()
